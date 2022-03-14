@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+
+    <title>SnapStory</title>
+    <meta content="" name="descriptison">
+    <meta content="" name="keywords">
+
+  
+    <!-- Favicons -->
+    <!-- <link href="static/assets/img/favicon.png" rel="icon"> -->
+    <link href="static/assets/img/apple-touch-icon.png" rel="apple-touch-icon">
+    <link rel="shortcut icon" href="{{ url_for('static', filename='assets/img/favicon.ico') }}">
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- <link href="https://fonts.googleapis.com/css?family=Raleway:400,500,700|Roboto:400,900" rel="stylesheet"> -->
+
+    <!-- Vendor CSS Files -->
+    <link href="static/assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="static/assets/vendor/venobox/venobox.css" rel="stylesheet">
+    <link href="static/assets/vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+
+    <!-- Dropzone -->
+    <link rel="stylesheet" href="static/assets/vendor/dropzone/dropzone.css">
+
+    <!-- Template Main CSS File -->
+    <link href="static/assets/css/style.css" rel="stylesheet">
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+   
+</head>
+
+<body>
+
+  
+    <header id="header">
+        <div class="navbar">
+
+            <div id="title" >
+            
+
+                <h1>SnapStory | </h1>
+                <h4>Using AI and imagination to sprinkle the magic dust of storytelling</h4>
+            </div>
+
+        </div>
+    </header>
+ 
+
+    <main id="main">
+
+    
+        <section class="about" id="story">
+
+            <div style="padding: 0 1rem;" class="text-center">
+
+                <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <div style="width: 50%;">
+                <h1>Upload Images</h1>
+                <p id="require">[ * format: <span class='subtitle'><b>.png .jpg</b></span>, * min size: <span class='subtitle'><b>250 x 250 px</b></span>, * max: <span class='subtitle'><b>3 images </span></b>]
+                    </span>
+                    <br />
+                    <br />
+                </div>
+                <div style="width: 50%;">
+                    <p>
+                        <form id="my-dropzone" action="{{ url_for('upload_files') }}" class="dropzone">
+                            <br />
+                            <button class="clearbtn" id="clear-dropzone">x</button>
+                        </form>
+                        <script src="static/assets/vendor/dropzone/dropzone.js"></script>
+
+
+                        <script language="javascript">
+   
+                            Dropzone.options.myDropzone = {
+                                init: function() {
+                                  
+                                    var _this = this;
+
+                               
+                                    document.querySelector("button#clear-dropzone").addEventObserver("click", function() {
+                                     
+                                        _this.removeAllFiles();
+                                      
+                                    });
+                                }
+                            };
+                        </script>
+                    </p>
+                </div>
+                </div>
+                    <br>
+                    <button class="btn" type='button' id='retrieve'>SUBMIT</button>
+                
+                    
+                    <div hidden id='image_caption_box' class="pagination">
+                        <div class="select-box">
+                            <h2 class="text-center" id='image_caption'></h2>
+                            <input type="radio" name="select-page" id="page1" checked>
+                            <input type="radio" name="select-page" id="page2">
+                            <input type="radio" name="select-page" id="page3">
+
+                            <div class="box-model">
+                                <ul class="boxmodel">
+                              
+                                    <span class="box1">
+                                        <li>
+                                            <img src="" id="plot_img" style="max-height: 95%; height: 400px; width: auto" />
+                                            <h5 class="card-title" id='caption'></h5>
+                                        </li>
+                                    </span>
+                        
+
+                                    <span class="box2">
+                                        <li>
+                                            <img src="" id="plot_img1" style="max-height: 95%; height: 400px; width: auto" />
+                                            <h5 class="card-title" id='caption1'></h5>
+                                        </li>
+                                    </span>
+                      
+
+                                    <span class="box3">
+                                        <li>
+                                            <img src="" id="plot_img2" style="max-height: 95%; height: 400px; width: auto" />
+                                            <h5 class="card-title" id='caption2'></h5>
+                                        </li>
+                                    </span>
+                             
+                                </ul>
+                                <div class="buttons">
+                                    <ul class="btn1">
+                                        <li name="page1"><label for="page1">1</label></li>
+                                        <li name="page2"><label for="page2">2</label></li>
+                                        <li name="page3"><label for="page3">3</label></li>
+                                    </ul>
+                                </div>
+                          
+                            </div>
+                        
+                        </div>
+                
+                    </div>
+
+
+                    <br>
+                    <div hidden id='story_block'>
+                        <h2 class="text-center" hidden id='story_section'></h2>
+                        <br>
+                        <div class="row justify-content-center">
+                            <div class="col-sm-4 col-xs-6">
+                                <div class="card bg-light text-dark card-block">
+                                    <img class="card-img-top" src="" id="myimg" style="max-width: 99%; height: auto; width: 600px" />
+                                    <div class="card-body">
+                                        <h5 class="card-title" id='wordtitle'></h5>
+                                        <p class="card-text" style="text-align:justify;">
+                                            <span style="font-size:15px;" id='wordResult'>
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-sm-4 col-xs-6">
+                                <div class="card bg-light text-dark card-block">
+                                <img class="card-img-top" src="" id="myimg1" style="max-width: 99%; height: auto; width: 600px" />
+                                <div class="card-body">
+                                    <h5 class="card-title" id='wordtitle1'></h5>
+                                    <p class="card-text" style="text-align:justify;">
+                                    <span style="font-size:15px;" id='wordResult1'>
+                                    </p>
+                                </div>
+
+                                </div>
+                            </div>
+
+                            <div class="col-sm-4 col-xs-6">
+                                <div class="card bg-light text-dark card-block">
+                                    <img class="card-img-top" src="" id="myimg2" style="max-width: 99%; height: auto; width: 600px" />
+                                    <div class="card-body">
+                                        <h5 class="card-title" id='wordtitle2'></h5>
+                                        <p class="card-text" style="text-align:justify;">
+                                        <span style="font-size:15px;" id='wordResult2'>
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div style="display: flex;flex-direction: column;">
+                <div hidden id="spinner"><span > &nbsp; </span></div>
+                    <div hidden id="spinner1"><span > &nbsp; </span></div>
+                </div>
+
+                                    <script>
+                                        spinner = document.getElementById("spinner");
+                                        image_caption_box = document.getElementById("image_caption_box");
+                                        story_block = document.getElementById("story_block");
+
+                                        var checkedAlready = false;
+                                        var checkedAlready2 = false;
+
+                                     
+                                        $('button.btn').click(function() {
+                                            if (!checkedAlready) {
+                                                $("#retrieve").html('Try again');
+                                                checkedAlready = true;
+                                            } else {
+                                                location.href = "/";
+                                            }
+                                        });
+
+                                        $(document).ready(function() {
+                                            $('#retrieve').click(function() {
+                                                if (!checkedAlready2) {
+                                                    spinner.removeAttribute("hidden");
+                                                    $.ajax({
+                                                        url: "{{ url_for ('image_caption') }}",
+                                                        type: "GET",
+                                                        success: function(response) {
+
+                                                            $("#image_caption").html('Generated Image Captions');
+                                                            image_caption_box.removeAttribute("hidden");
+                                                            if (response.image_names[0]) {
+                                                                $("#plot_img").attr('src', '/static/plot/' + response.plot_image_name[0]);
+                                                                $("#caption").html('Caption: ' + response.caption_image_list[0]);
+                                                            }
+                                                            if (response.image_names[1]) {
+                                                                $("#plot_img1").attr('src', '/static/plot/' + response.plot_image_name[1]);
+                                                                $("#caption1").html('Caption: ' + response.caption_image_list[1]);
+                                                            }
+                                                            if (response.image_names[2]) {
+                                                                $("#plot_img2").attr('src', '/static/plot/' + response.plot_image_name[2]);
+                                                                $("#caption2").html('Caption: ' + response.caption_image_list[2]);
+                                                            }
+                                                            spinner.setAttribute("hidden", "");
+
+                                                            spinner1.removeAttribute("hidden");
+                                                            $.ajax({
+                                                                url: "{{ url_for ('display_image') }}",
+                                                                type: "GET",
+                                                                success: function(response) {
+                                                                    $("#story_section").html('Stories generated from caption');
+                                                                    story_block.removeAttribute("hidden");
+                                                                    if (response.image_names[0]) {
+                                                                        $("#myimg").attr('src', '/static/uploads/' + response.image_names[0]);
+                                                                        $("#wordtitle").html(response.caption_list[0]);
+                                                                        $("#wordResult").html(response.text_list[0]);
+                                                                    }
+                                                                    if (response.image_names[1]) {
+                                                                        $("#myimg1").attr('src', '/static/uploads/' + response.image_names[1]);
+                                                                        $("#wordtitle1").html(response.caption_list[1]);
+                                                                        $("#wordResult1").html(response.text_list[1]);
+                                                                    }
+                                                                    if (response.image_names[2]) {
+                                                                        $("#myimg2").attr('src', '/static/uploads/' + response.image_names[2]);
+                                                                        $("#wordtitle2").html(response.caption_list[2]);
+                                                                        $("#wordResult2").html(response.text_list[2]);
+                                                                    }
+                                                                    spinner1.setAttribute("hidden", "");
+                                                                },
+                                                                error: function(xhr) {
+                                                                    //Do Something to handle error
+                                                                }
+                                                            });
+                                                            checkedAlready2 = true;
+                                                        },
+                                                        error: function(xhr) {
+                                                   
+                                                        }
+                                                    });
+                                                }
+
+                                            });
+                                        });
+                                    </script>
+                                </div>
+
+        </section>
+
+      
+
+        <section class="team" id="team">
+            <div style="background: rgba(230, 224, 233, 0.692);
+            border-radius: 24px; padding: 2rem;" class="container">
+                <h2 class="text-center">
+                   The Wonderful Team
+                </h2>
+
+                <div class="row">
+                    <div class="col">
+                        <div class="card card-block">
+                            <a href="#"><img alt="" class="team-img" src="static/assets/img/arindaam.jpeg">
+                                <div class="card-title-wrap">
+                                    <span class="card-title">Arindaam Roy</span> 
+                                    
+                                </div>
+
+                            </a>
+                        </div>
+
+
+                    </div>
+
+                    <div class="col">
+                        <div class="card card-block">
+                            <a href="#"><img alt="" class="team-img" src="static/assets/img/divjeet.jpg">
+                                <div class="card-title-wrap">
+                                    <span class="card-title">Divjeet Singh Jas</span> 
+                                    
+                                </div>
+                              
+                            </a>
+                        </div>
+
+
+                    </div>
+
+                    <div class="col">
+                        <div class="card card-block">
+                            <a href="#"><img alt="" class="team-img" src="static/assets/img/kiran.jpeg">
+                                <div class="card-title-wrap">
+                                    <span class="card-title">Kiranpreet Kaur</span> 
+                                    
+                                </div>
+
+                              
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="col">
+                        <div class="card card-block">
+                            <a href="#"><img alt="" class="team-img" src="static/assets/img/suvi.png">
+                                <div class="card-title-wrap">
+                                    <span class="card-title">Suvi Varshaney</span> 
+                                    
+                                </div>
+
+                               
+                            </a>
+                        </div>
+                    </div>
+
+                   
+                </div>
+            </div>
+        </section>
+        <!-- End Team Section -->
+
+    </main>
+    <!-- End #main -->
+
+    <!-- ======= Footer ======= -->
+    <footer class="site-footer">
+        <div class="bottom">
+            <div>
+                <div style="justify-content: space-between;
+                padding: 0 6rem;" class="row">
+
+                    <div class="col-lg-6 col-xs-12 text-lg-left text-center">
+                        <p class="copyright-text">
+                            ECS 289G Final Project
+                        </p>
+                       
+                    </div>
+
+                    <div class="col-lg-6 col-xs-12 text-lg-right text-center">
+                        <ul class="list-inline">
+                            <!-- <li class="list-inline-item">
+                                <a href="/">Try Again</a>
+                            </li>
+
+                            <li class="list-inline-item">
+                                <a href="#story">Tell a Story</a>
+                            </li>
+
+                        
+                            <li class="list-inline-item">
+                                <a href="#team">Team</a>
+                            </li> -->
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+    <!-- End Footer -->
+
+    <a class="scrolltop" href="#"><span class="fa fa-angle-up"></span></a>
+
+    <!-- Vendor JS Files -->
+    <!-- <script src="static/assets/vendor/jquery/jquery.min.js"></script> -->
+    <script src="static/assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="static/assets/vendor/jquery.easing/jquery.easing.min.js"></script>
+    <script src="static/assets/vendor/counterup/counterup.min.js"></script>
+    <script src="static/assets/vendor/tether/js/tether.min.js"></script>
+    <script src="static/assets/vendor/jquery-sticky/jquery.sticky.js"></script>
+    <script src="static/assets/vendor/venobox/venobox.min.js"></script>
+    <script src="static/assets/vendor/lockfixed/jquery.lockfixed.min.js"></script>
+    <script src="assets/vendor/waypoints/jquery.waypoints.min.js"></script>
+    <script src="static/assets/vendor/superfish/superfish.min.js"></script>
+    <script src="static/assets/vendor/hoverIntent/hoverIntent.js"></script>
+
+    <!-- Template Main JS File -->
+    <script src="static/assets/js/main.js"></script>
+
+</body>
+
+</html>
