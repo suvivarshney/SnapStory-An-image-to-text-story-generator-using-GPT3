@@ -15,7 +15,7 @@ from PIL import Image
 from matplotlib.backends.backend_agg import FigureCanvasAgg as FigureCanvas
 
 # GPT3 Module
-from gpt3 import generate_story, load_model, create_paragraphing_html, gpt3_init
+from gpt3 import generate_story, create_paragraphing_html, gpt3_init
 
 
 app = Flask(__name__)

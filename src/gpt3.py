@@ -13,7 +13,7 @@ from textblob import TextBlob
 client = GrammarBotClient() # create client beforehand
 
 def gpt3_init():
-    openai.api_key = "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"
+    openai.api_key = "ENTER YOUR OWN API KEY"
 
 def load_model():
  
