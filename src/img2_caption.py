@@ -1,9 +1,3 @@
-# -*- coding: utf-8 -*-
-"""
-Created on Sat Aug 29 00:09:28 2020
-
-@author: Phoenix
-"""
 import os
 import re
 import time
@@ -17,26 +11,6 @@ from PIL import Image
 from sklearn.model_selection import train_test_split
 from sklearn.utils import shuffle
 
-'''//tree structure
-    thisfile.py
-    tokenizer.pickle
-    checkpoints
-    |---train
-        |---checkpoint
-        |---ckpt-4.data-00000-of-00001
-        |---ckpt-4.index
-'''
-
-'''//Stuff you need:
-    tokenizer loaded in via pickle object file
-    checkpoint_path = "./checkpoints/train" folder
-    ckpt-4.index loaded in via ckpt.restore
-
-    call the predict() function to test'''
-
-#TODO: run this code on your computer to ensure it works
-#TODO: reorganize code to look structured and nice :)
-#TODO: testing on other images
 
 class BahdanauAttention(tf.keras.Model):
     def __init__(self):
@@ -158,19 +132,7 @@ def load_models():
     return image_features_extract_model, tokenizer, encoder, decoder
 
 def predict(image,image_features_extract_model, tokenizer, encoder, decoder):
-    """preprocess image, pass through encoder and decoder, obtain caption
-
-    Args:
-        image: image path
-        image_features_extract_model: InceptionV3 model from load_model()
-        tokenizer: tokenizer fitted on train dataset from load_model()
-        encoder: Dense layer from load_model()
-        decoder: RNN model from load_model()
-
-    Returns:
-        result: list of words predicted from image
-        attention plot: not important, dont use
-    """
+ 
     attention_plot = np.zeros((49, 64))
 
     hidden = decoder.reset_state(batch_size=1)

@@ -15,49 +15,9 @@ client = GrammarBotClient() # create client beforehand
 def gpt3_init():
     openai.api_key = "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"
 
-def load_model():
-    '''
-    Loads and returns a pre-trained GPT-2 text-generator model (https://huggingface.co/gpt2)
-
-    Returns
-    -------
-    model : transformers.pipelines.TextGenerationPipeline
-        The pre-trained GPT-2 model
-    '''
-    model = pipeline('text-generation', model='gpt2')
-    set_seed(42)
-    return model
-
 
 def generate_story(input_text, model=None, max_length=500, use_narrative_hook=False):
-    '''
-    Returns a story generated using
-    (i) a pre-trained GPT-2 model, and
-    (ii) the input text.
-
-    The input text is automatically embellished with a narrative hook incorporated as the opening line.
-
-    The length of generated paragraph may be capped at a given number of words ("max_length"),
-    otherwise the default cap is 100 words.
-
-    Parameters
-    ----------
-    input_text : str
-        The seed text used to generate a paragraph using GPT-2 model.
-        It does not need to have a complete sentence.
-
-    max_length  : int
-        Maximum number of words of generated paragraph.
-
-    use_narrative_hook : boolean
-        Whether to create more dramatic, story-telling impact by adding a randomly-selected narrative hook
-        as the opening line (i.e before the input_text) before passing such text collectively into the GPT-2 model.
-
-    Returns
-    -------
-    paragraph : str
-        The paragraph generated using GPT-2 model (inclusive of input text).
-    '''
+  
     # Preprocess
     input_text = preprocess(input_text)
     if use_narrative_hook:
@@ -65,7 +25,7 @@ def generate_story(input_text, model=None, max_length=500, use_narrative_hook=Fa
 
     # Produce
     # return generate_paragraph(input_text, model, max_length=max_length)
-    input_text = "This is a story about 3 men sitting on a sofa and discussing about their job. They all seem very confused about their future. \n"  
+    input_text = "Tell me a story about" + input_text +"\n"  
     print(input_text)
     return generate_paragraph_gpt3(input_text, max_length=max_length)
 
@@ -91,28 +51,7 @@ def generate_paragraph_gpt3(input_text, max_length=500):
 
 
 def generate_paragraph(input_text, model, max_length=100):
-    '''
-    Returns a paragraph generated using
-    (i) a pre-trained GPT-2 model, and
-    (ii) an input text that is incorporated as the opening line.
 
-    The length of generated paragraph may be capped at a given number of words ("max_length"),
-    otherwise the default cap is 50 words.
-
-    Parameters
-    ----------
-    input_text : str
-        The seed text used to generate a paragraph using GPT-2 model.
-        It does not need to be a complete sentence, but the text must begin properly.
-
-    max_length  : int
-        Maximum number of words of generated paragraph.
-
-    Returns
-    -------
-    paragraph : str
-        The paragraph generated using GPT-2 model (inclusive of input text).
-    '''
     # Preprocess
     input_text = input_text.capitalize()
 
@@ -128,22 +67,7 @@ def generate_paragraph(input_text, model, max_length=100):
 
 
 def preprocess(text):
-    '''
-    Preprocesses input text by
-    (i) removing angular brackets (if any),
-    (ii) correcting grammar, and
-    (iii) capitalising first word.
 
-    Parameters
-    ----------
-    text : str
-        Text to be preprocessed.
-
-    Returns
-    -------
-    text : str
-        Preprocessed text.
-    '''
     # Remove angular brackets
     text = remove_angular_brackets(text)
 
@@ -161,38 +85,14 @@ def preprocess(text):
 
 
 def remove_angular_brackets(text):
-    '''
-    Returns text with angular brackets and leading and trailing whitespaces removed.
-
-    Parameters
-    ----------
-    text : str
-        Text to be cleaned and have its angular brackets and leading and trailing whitespaces removed.
-
-    Returns
-    -------
-    text : str
-        Cleaned text.
-    '''
+ 
     regex = re.compile('<.*?>')
     text = re.sub(regex, '', text)
     return text.strip()
 
 
 def find_verbs(caption):
-    '''
-    Finds present participle in caption and adds 'is' in front of it.
-
-    Parameters
-    ----------
-    caption : str
-        Caption to be processed.
-
-    Returns
-    -------
-    caption : str
-        The processed caption with 'is' before the present participle.
-    '''
+ 
     blob = TextBlob(caption)
     for word,tag in blob.tags:
         if tag == 'VBG':
@@ -204,19 +104,7 @@ def find_verbs(caption):
 
 
 def convert_past_tense(caption):
-    '''
-    Converts present tense into past tense.
-
-    Parameters
-    ----------
-    caption : str
-        Caption that contains present tense (e.g. 'is', 'are') to be processed.
-
-    Returns
-    -------
-    caption : str
-        Caption converted into past tense.
-    '''
+ 
     caption = re.sub(r'\bis\b', 'was', caption)
     caption = re.sub(r'\bam\b', 'was', caption)
     caption = re.sub(r'\bare\b', 'were', caption)
@@ -224,20 +112,7 @@ def convert_past_tense(caption):
 
 
 def check_grammar(paragraph):
-    '''
-    Checks and replaces grammatically incorrect parts of paragraph using grammarbot API
-    (https://github.com/GrammarBot-API/grammarbot-py)
 
-    Parameters
-    ----------
-    paragraph : str
-        Paragraph to be processed and have its grammar corrected.
-
-    Returns
-    -------
-    paragraph : str
-        The gramatically correct paragraph processed using grammarbot.
-    '''
     try:
         res = client.check(paragraph)
         n_text = ''
@@ -256,19 +131,7 @@ def check_grammar(paragraph):
 
 
 def remove_incomplete_sentence(paragraph):
-    '''
-    Returns the paragraph with its trailing incomplete sentence removed.
 
-    Parameters
-    ----------
-    paragraph : str
-        Paragraph to be processed and have its trailing incomplete sentence removed.
-
-    Returns
-    -------
-    paragraph : str
-        Paragraph with trailing incomplete sentence removed.
-    '''
     # Find negative/reverse position index of last sentence-terminating punctuation in paragraph
     last_punctuation_idx = find_last_punctuation_idx(paragraph)
 
@@ -279,23 +142,7 @@ def remove_incomplete_sentence(paragraph):
 
 
 def find_last_punctuation_idx(paragraph):
-    '''
-    Identifies and returns the negative/reverse position index of a punctuation symbol (!?,") that is:
-    (i) typically indicative of the end of a sentence ("sentence-terminating"), and
-    (ii) closest to the end of the paragraph.
 
-    Returns 0 if no such punctuation symbol is present.
-
-    Parameters
-    ----------
-    paragraph : str
-        Paragraph from which the index of the last, sentence-terminating punctuation symbol is to be identified.
-
-    Returns
-    -------
-    idx : int
-        The negative/reverse position index of the last, sentence-terminating punctuation symbol in the given paragraph.
-    '''
     # To-do: account for hard cases where sentences ends with single or double quotation marks.
     for idx, char in enumerate(paragraph[::-1]):
         if char in ['!','.','?']:
@@ -304,31 +151,12 @@ def find_last_punctuation_idx(paragraph):
 
 
 def create_paragraphing_html(text):
-    '''
-    Takes a paragraph with line breaks in Python ('\n') and returns with line breaks in HTML ('<br>')
-
-    Parameters
-    ----------
-    text : str
-        Paragraph with line breaks in Python
-
-    Returns
-    -------
-    text : str
-        Paragraph with line breaks in html.
-    '''
+ 
     return text.replace('\n', '<br>')
 
 
 def random_narrative_hook():
-    '''
-    Returns a random narrative hook that is dramatic.
 
-    Returns
-    -------
-    text : str
-        A random narrative hook that is dramatic.
-    '''
     try:
         # (i) narrative hooks from datasets online
         dramatic = pd.read_csv('hooks.csv')
@@ -390,24 +218,7 @@ def random_narrative_hook():
 
 
 def embellish_text(input_text):
-    '''
-    Embellishes input_text by adding a randomly-selected narrative hook as the opening line
 
-    Parameters
-    ----------
-    input_text : str
-        The text to be embellished with a random opening line incorporated
-
-
-    Returns
-    -------
-    text : str
-        The embellished text with a random opening line incorporated
-    '''
     return random_narrative_hook().capitalize() + '\n\n' + input_text.capitalize()
 
 
-if __name__ == '__main__':
-    model = load_model()
-    para = generate_story("He walked by his house. I am ham", model)
-    print(para)

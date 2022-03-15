@@ -30,7 +30,6 @@ result_list = []  # init empty result list
 last_story = ""
 
 # Load GPT3 model
-model = load_model()
 gpt3_init()
 
 
@@ -62,15 +61,7 @@ def plot_attention(image, result, attention_plot):
 
 
 def validate_image(stream):
-    """
-    Ensure the images are valid and in correct format
 
-    Args:
-        stream (Byte-stream): The image
-
-    Returns:
-        str: return image format
-    """
     header = stream.read(512)
     stream.seek(0)
     format = imghdr.what(None, header)
@@ -80,12 +71,7 @@ def validate_image(stream):
 
 
 def del_dir_files(files_path):
-    """
-    Delete all user upload temp image files in the directory after reload
 
-    Args:
-        files_path (str): path of images
-    """
     existing_files = os.path.join(files_path, '*')
     file_to_delete = glob.glob(existing_files)
     for i in file_to_delete:
@@ -94,18 +80,12 @@ def del_dir_files(files_path):
 
 @app.errorhandler(413)
 def too_large(e):
-    """ Check if file size is too large """
+  
     return "File is too large", 413
 
 
 @app.route('/')
 def index():
-    """
-    Render index.html and delete all the image files in static/uploads
-
-    Returns:
-        Render Html: Rendered index.html
-    """
 
     result_list[:] = []  # clear result list
 
@@ -122,13 +102,7 @@ def index():
 
 @app.route('/', methods=['POST'])
 def upload_files():
-    """
-    Upload the image to static/uploads folder and validate the filename and 
-    extension .jpg .png
-
-    Returns:
-        empty string: 204 No Content success status response code
-    """
+ 
     uploaded_file = request.files['file']
     filename = secure_filename(uploaded_file.filename)
     if filename != '':
@@ -143,13 +117,7 @@ def upload_files():
 
 @app.route('/image_caption', methods=["GET", "POST"])
 def image_caption():
-    """
-    Predict and display the result
-
-    Returns:
-        Json: Return the filename of the images and the generated story 
-                for each image
-    """
+ 
     image_names = os.listdir(app.config['UPLOAD_PATH'])
 
     caption_image_list = []
@@ -180,13 +148,7 @@ def image_caption():
 
 @app.route('/display_image', methods=["GET", "POST"])
 def display_image():
-    """
-    Predict and display the result
-
-    Returns:
-        Json: Return the filename of the images and the generated story 
-                for each image
-    """
+ 
     image_names = os.listdir(app.config['UPLOAD_PATH'])
 
     caption_list = []
@@ -196,9 +158,7 @@ def display_image():
     j = 0
 
     for i in image_names:
-        # result, attention_plot = predict(os.path.join(
-        #     app.config['UPLOAD_PATH'], i), image_features_extract_model,
-        #     tokenizer, encoder, decoder)
+     
 
         result = result_list[j]
         caption_title = f"'{' '.join(result[:]).capitalize()}'"
@@ -221,4 +181,4 @@ def display_image():
 
 if __name__ == "__main__":
     app.run(debug=True, port=8000)
-    # Use gunicorn for serving in production
+   
