@@ -10,10 +10,16 @@ from textblob import TextBlob
 
 
 ## PARAGRAPH-GENERATING MODEL
-client = GrammarBotClient() 
+client = GrammarBotClient() # create client beforehand
 
 def gpt3_init():
     openai.api_key = "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"
+
+def load_model():
+ 
+    model = pipeline('text-generation', model='gpt3')
+    set_seed(42)
+    return model
 
 
 def generate_story(input_text, model=None, max_length=500, use_narrative_hook=False):
@@ -222,3 +228,7 @@ def embellish_text(input_text):
     return random_narrative_hook().capitalize() + '\n\n' + input_text.capitalize()
 
 
+if __name__ == '__main__':
+    model = load_model()
+    para = generate_story("He walked by his house. I am ham", model)
+    print(para)

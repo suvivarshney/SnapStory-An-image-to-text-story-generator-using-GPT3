@@ -92,7 +92,7 @@ def index():
     # Cleanup all the image files in static/uploads.
     del_dir_files(app.config['UPLOAD_PATH'])
     del_dir_files(app.config['PLOT_PATH'])
- 
+   
 
     return render_template('index.html')
 
