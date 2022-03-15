@@ -10,7 +10,7 @@ from textblob import TextBlob
 
 
 ## PARAGRAPH-GENERATING MODEL
-client = GrammarBotClient() # create client beforehand
+client = GrammarBotClient() 
 
 def gpt3_init():
     openai.api_key = "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"

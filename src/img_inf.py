@@ -1,7 +1,7 @@
 
 from img2_caption import *
 
-image_path = r'test_img_2.jpeg' # enter your own path
+image_path = r'test_img.jpeg' # enter your own path
 
 #load models
 image_features_extract_model, tokenizer, encoder, decoder = load_models()

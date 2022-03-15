@@ -92,10 +92,7 @@ def index():
     # Cleanup all the image files in static/uploads.
     del_dir_files(app.config['UPLOAD_PATH'])
     del_dir_files(app.config['PLOT_PATH'])
-    # existing_files = os.path.join(app.config['UPLOAD_PATH'], '*')
-    # file_to_delete = glob.glob(existing_files)
-    # for i in file_to_delete:
-    #     os.remove(i)
+ 
 
     return render_template('index.html')
 

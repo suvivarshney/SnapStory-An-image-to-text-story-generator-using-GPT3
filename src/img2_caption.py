@@ -45,7 +45,6 @@ class CNN_Encoder(tf.keras.Model):
     # This encoder passes those features through a Fully connected layer
     def __init__(self):
         super(CNN_Encoder, self).__init__()
-        # shape after fc == (batch_size, 64, embedding_dim)
         self.fc = tf.keras.layers.Dense(256)
 
     def call(self, x):
