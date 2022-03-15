@@ -14,8 +14,8 @@ from img2_caption import load_models, predict
 from PIL import Image
 from matplotlib.backends.backend_agg import FigureCanvasAgg as FigureCanvas
 
-# GPT2 Module
-from gpt2 import generate_story, load_model, create_paragraphing_html, gpt3_init
+# GPT3 Module
+from gpt3 import generate_story, load_model, create_paragraphing_html, gpt3_init
 
 
 app = Flask(__name__)
@@ -29,7 +29,7 @@ image_features_extract_model, tokenizer, encoder, decoder = load_models()
 result_list = []  # init empty result list
 last_story = ""
 
-# Load GPT2 model
+# Load GPT3 model
 model = load_model()
 gpt3_init()
 
